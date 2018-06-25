@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+const https = require('https');
+const fs = require('fs');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const app = require('../app.js');
+
+const opts = {
+  cert: process.env.HOSTING_CERT,
+  key: process.env.HOSTING_CERT_KEY
+};
+
+server = app.server = https.createServer(opts, app);
+
+server.listen(process.env.PORT || 8081, function (err) {
+  if (err) {
+    console.log('Startup failed: ', err);
+  } else {
+    console.log(`Now listening on port ${process.env.PORT}`);
+  }
+});
+
+function stop(options) {
+  app.server.close();
+  process.exit(0);
+}
+
+process.on('SIGINT', stop.bind(null, {}));
+process.on('SIGTERM', stop.bind(null, {}));

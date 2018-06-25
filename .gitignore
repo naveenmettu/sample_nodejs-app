@@ -1,0 +1,15 @@
+# Logs
+npm-debug.log*
+
+# Dependency directories
+node_modules/
+
+# Environment settings
+.env
+
+# Optional npm cache directory
+.npm
+
+# System Files
+.DS_Store
+Thumbs.db
