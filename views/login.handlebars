@@ -1,9 +1,24 @@
+<span>{{#if requestSso}}Single Sign-On for {{spName}}{{else}}Login{{/if}}</span>
+<br/>
 <form method="POST" action="/auth/login">
-  <label for="username">Username:</label>
-  <input type="text" name="username" placeholder="Enter your username"/>
-  <br/>
-  <label for="password">Password:</label>
-  <input type="password" name="password" placeholder="Enter your password"/>
-  <br/>
-  <input type="submit"/>
-</form>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter your username"/>
+        <br/>
+        <label for="password">Password:</label>
+        <input type="password" name="password" placeholder="Enter your password"/>
+        <br/>
+        <input type="hidden" name="requestSSO" value="{{requestSso}}"/>
+        <input type="hidden" name="sp" value="{{issuer}}"/>
+        <input type="hidden" name="id" value="{{id}}"/>
+        <input type="hidden" name="destination" value="{{destination}}"/>
+        <input type="hidden" name="acsUrl" value="{{acsUrl}}"/>
+        <input type="hidden" name="RelayState" value="{{relayState}}"/>
+        <input type="submit"/>
+      </form>
+      <script>
+        document.onreadystatechange = function () {
+          if (document.readyState == "interactive") {
+            document.getElementById('username').focus();
+          }
+        }
+      </script>

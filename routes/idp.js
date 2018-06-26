@@ -19,7 +19,7 @@ function handleSamlResponse(response, opts, req, res, next) {
     destination: opts.postUrl,
     RelayState: opts.RelayState
   });
-  
+
   res.render('saml-response', {
     AcsUrl: opts.postUrl,
     SAMLResponse: response.toString('base64'),
@@ -71,13 +71,16 @@ function signIn(req, res, next) {
       return idp.signIn(authenticationOptions)(req, res, next);
     }
 
+    authenticationOptions.requestSso = true;
+    authenticationOptions.spName = spOptions[authenticationOptions.issuer].name;
     return res.render('login', authenticationOptions);
   });
 }
 
 function signOut(req, res) {
   // TODO: Support single sign-out URL for SP
-  if (req.isAuthenticated()) {
+  req.logout();
+  if (req.session) {
     return req.session.destroy(function(err) {
       if (err) {
         throw err;
