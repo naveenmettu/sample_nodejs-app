@@ -30,7 +30,8 @@
  * }
  */
 const passport = require('passport');
-const LdapStrategy = require('../lib/LdapStrategy.js');
+const LdapStrategy = require('../lib/LdapStrategy');
+const logger = require('../lib/logger');
 
 const auth = {};
 
@@ -42,11 +43,29 @@ const auth = {};
  */
 
 function verifyLdapProfile(user, done) {
-  // TODO: Map to a user; for now, just return the user
+  // Map into the passport User Profile model (http://passportjs.org/guide/profile/)
   const profile = {
+    provider: 'ldap',
+    id: (user.userPrincipalName || user.sAMAccountName).toString().toLowerCase(),
+    displayName: (user.displayName || user.cn) ? (user.displayName || user.cn).toString() : undefined,
+    name: {
+      familyName: user.sn.toString(),
+      givenName: user.givenName.toString()
+    },
+    emails: [{
+      value: user.mail.toString().toLowerCase(),
+      type: 'work'
+    }],
+    photos: [],
     dn: user.dn.toString(),
-    username: user.sAMAccountName.toString()
+    groups: (user.memberOf ? (process.env.LDAP_AD_MEMBER_OF_FILTER ? user.memberOf.filter((dn) => {
+        return dn.toString().indexOf(process.env.LDAP_AD_MEMBER_OF_FILTER) !== -1;
+      }) : user).map((dn) => {
+        return dn.toString().substring(3, dn.indexOf(',')); 
+      }) : undefined)
   };
+
+  logger.debug('Mapped user into profile', { profile });
 
   done(null, profile);
 }
