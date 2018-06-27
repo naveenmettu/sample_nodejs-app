@@ -1,0 +1,9 @@
+npm-debug.log
+.env
+*.crt
+*.key
+.git
+.gitignore
+.npm
+.DS_Store
+Thumbs.db

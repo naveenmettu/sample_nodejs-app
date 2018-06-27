@@ -6,6 +6,9 @@ node_modules/
 
 # Environment settings
 .env
+*.crt
+*.key
+service-provider-config*
 
 # Optional npm cache directory
 .npm
