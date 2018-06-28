@@ -49,13 +49,13 @@ function verifyLdapProfile(user, done) {
     id: (user.userPrincipalName || user.sAMAccountName).toString().toLowerCase(),
     displayName: (user.displayName || user.cn) ? (user.displayName || user.cn).toString() : undefined,
     name: {
-      familyName: user.sn.toString(),
-      givenName: user.givenName.toString()
+      familyName: (user.sn ? user.sn.toString() : undefined),
+      givenName: (user.givenName ? user.givenName.toString() : undefined)
     },
-    emails: [{
+    emails: (user.mail ? [{
       value: user.mail.toString().toLowerCase(),
       type: 'work'
-    }],
+    }] : []),
     photos: [],
     dn: user.dn.toString(),
     groups: (user.memberOf ? (process.env.LDAP_AD_MEMBER_OF_FILTER ? user.memberOf.filter((dn) => {

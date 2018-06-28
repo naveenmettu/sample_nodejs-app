@@ -49,8 +49,9 @@ const idp = new IdentityProvider({
     redirect: `/idp${ROUTES.SIGN_OUT}`,
     post: `/idp${ROUTES.SIGN_OUT}`
   },
-  responseHandler: handleSamlResponse
-}, spOptions);
+  responseHandler: handleSamlResponse,
+  serviceProviders: spOptions
+});
 
 /**
  * signIn
