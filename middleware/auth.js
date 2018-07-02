@@ -58,10 +58,10 @@ function verifyLdapProfile(user, done) {
     }] : []),
     photos: [],
     dn: user.dn.toString(),
-    groups: (user.memberOf ? (process.env.LDAP_AD_MEMBER_OF_FILTER ? user.memberOf.filter((dn) => {
+    groups: (user.memberOf ? (process.env.LDAP_AD_MEMBER_OF_FILTER ? (Array.isArray(user.memberOf) ? user.memberOf : [user.memberOf]).filter((dn) => {
         return dn.toString().indexOf(process.env.LDAP_AD_MEMBER_OF_FILTER) !== -1;
-      }) : user).map((dn) => {
-        return dn.toString().substring(3, dn.indexOf(',')); 
+      }) : (Array.isArray(user.memberOf) ? user.memberOf : [user.memberOf])).map((dn) => {
+        return dn.toString().substring(3, dn.toString().indexOf(',')); 
       }) : undefined)
   };
 
