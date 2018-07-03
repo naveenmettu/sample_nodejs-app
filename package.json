@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "start": "node -r dotenv/config ./bin/www",
-    "prettier":
-      "./node_modules/.bin/prettier --config ./package.json --write \"{bin,lib,middleware,models,routes,utils}/**/*.{js,jsx,json,css}\"",
+    "prettier": "./node_modules/.bin/prettier --config ./package.json --write \"{bin,lib,middleware,models,routes,utils}/**/*.{js,jsx,json,css}\"",
     "eslint": "./node_modules/.bin/eslint \"{bin,middleware,models,routes,utils}/**/*.js\"",
     "precommit": "lint-staged"
   },
@@ -33,7 +32,11 @@
     "prettier": "^1.13.7"
   },
   "nodemonConfig": {
-    "ignore": ["*.spec.js", "test/*", "docs/*"]
+    "ignore": [
+      "*.spec.js",
+      "test/*",
+      "docs/*"
+    ]
   },
   "prettier": {
     "singleQuote": true,
