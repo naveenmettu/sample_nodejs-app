@@ -1,53 +1,52 @@
 #!/usr/bin/env node
-const fs = require('fs');
-const logger = require('../lib/logger');
+const fs = require('fs')
+const logger = require('../lib/logger')
 
-const app = require('../app');
+const app = require('../app')
 
 function start(callback) {
   if (process.env.PROTOCOL === 'https') {
     const opts = {
       cert: process.env.HOSTING_CERT,
       key: process.env.HOSTING_CERT_KEY
-    };
+    }
 
-    app.server = require('https').createServer(opts, app);
+    app.server = require('https').createServer(opts, app)
+  } else {
+    app.server = require('http').createServer(app)
   }
-  else {
-    app.server = require('http').createServer(app);
-  }
 
-  app.server.on('error', onError);
-  app.server.on('listening', onListening);
+  app.server.on('error', onError)
+  app.server.on('listening', onListening)
 
-  app.set('port', process.env.PORT);
-  app.server.listen(app.get('port'));
+  app.set('port', process.env.PORT)
+  app.server.listen(app.get('port'))
 
-  process.on('SIGINT', stop.bind(null, {}));
-  process.on('SIGTERM', stop.bind(null, {}));
+  process.on('SIGINT', stop.bind(null, {}))
+  process.on('SIGTERM', stop.bind(null, {}))
 }
 
 function stop(options) {
-  logger.info('Processing application stop request');
+  logger.info('Processing application stop request')
   if (process.env.PROTOCOL === 'https') {
-    app.server.close();
+    app.server.close()
   }
-  process.exit(0);
+  process.exit(0)
 }
 
 function onError(error) {
-  logger.error('Received server error', { error });
+  logger.error('Received server error', { error })
 }
 
 function onListening(error) {
   if (error) {
-    logger.error('Startup failed', { error });
+    logger.error('Startup failed', { error })
   } else {
-    logger.info(`Now listening on port ${process.env.PORT}`);
+    logger.info(`Now listening on port ${process.env.PORT}`)
   }
 }
 
-process.on('SIGINT', stop.bind(null, {}));
-process.on('SIGTERM', stop.bind(null, {}));
+process.on('SIGINT', stop.bind(null, {}))
+process.on('SIGTERM', stop.bind(null, {}))
 
-start();
+start()
