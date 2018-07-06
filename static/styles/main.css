@@ -1,0 +1,84 @@
+h3 {
+	font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+	font-size: 24px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 15.4px;
+  display: inline;
+  margin: 0px;
+  padding: 0px;
+  position: absolute;
+  top: 90px;
+}
+p {
+	font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+	font-size: 14px;
+	font-style: normal;
+	font-variant: normal;
+  letter-spacing: 1px;
+	font-weight: 100;
+	line-height: 20px;
+}
+body {
+  margin: 0px;
+}
+main {
+  color: white;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+section {
+   width: 75%;
+}
+
+aside {
+  background-color: black;
+  padding: 50px 0px 0px 50px;
+}
+.backgroundImage {
+  background-image: url("/../images/att_globe_rgb_grd_pos.png");
+  background-repeat: no-repeat;
+  background-color: #00A8E0;
+  background-size: cover;
+  overflow: hidden;
+}
+.formLogo {
+  background-image: url("/../images/att_globe_rgb_grd_pos.png");
+  height: 100px;
+  width: 100px;
+  background-repeat: no-repeat;
+  background-size: 100px;
+  display: inline-block;
+}
+
+.formText {
+  width: 158px;
+}
+
+.username, .password {
+  display: block;
+  margin: 20px 0px;
+  padding: 20px;
+  width: 360px;
+  border-radius: 8px;
+}
+
+.loginBtn {
+  background-color: #00A8E0;
+  border-radius: 8px;
+  padding: 20px;
+  width: 200px;
+  border: none;
+  color: white;
+  font-size: 24px;
+  margin-bottom: 40px;
+}
+
+a {
+  color: #00A8E0;
+  font-size: 16px;
+  font-weight: initial;
+}
