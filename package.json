@@ -4,7 +4,11 @@
   "description": "Identity Provider for ATT Data Products",
   "private": true,
   "scripts": {
-    "start": "node -r dotenv/config ./bin/www"
+    "start": "node ./bin/www",
+    "prettier": "./node_modules/.bin/prettier --config ./package.json --write \"{bin,lib,middleware,routes,test}/**/*.{js,json}\"",
+    "eslint": "./node_modules/.bin/eslint \"{bin,lib,middleware,routes,test}/**/*.js\"",
+    "test": "mocha test/**/*.js",
+    "coverage": "nyc --reporter=html --reporter=text mocha test/**/*.js"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -20,5 +24,11 @@
     "samlp": "^3.4.0",
     "winston": "^3.0.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
+    "prettier": "^1.13.7",
+    "supertest": "^3.1.0"
+  }
 }
