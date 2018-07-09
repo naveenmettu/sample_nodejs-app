@@ -1,24 +1,32 @@
-<span>{{#if requestSso}}Single Sign-On for {{spName}}{{else}}Login{{/if}}</span>
-<br/>
-<form method="POST" action="/auth/login">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" placeholder="Enter your username"/>
-        <br/>
-        <label for="password">Password:</label>
-        <input type="password" name="password" placeholder="Enter your password"/>
-        <br/>
-        <input type="hidden" name="requestSSO" value="{{requestSso}}"/>
-        <input type="hidden" name="sp" value="{{issuer}}"/>
-        <input type="hidden" name="id" value="{{id}}"/>
-        <input type="hidden" name="destination" value="{{destination}}"/>
-        <input type="hidden" name="acsUrl" value="{{acsUrl}}"/>
-        <input type="hidden" name="RelayState" value="{{relayState}}"/>
-        <input type="submit"/>
-      </form>
-      <script>
-        document.onreadystatechange = function () {
-          if (document.readyState == "interactive") {
-            document.getElementById('username').focus();
-          }
+<main>
+  <aside class="backgroundImage"></aside>
+  <section>
+    <div class="formLogo"></div>
+    <h3 class="logoText">MAC Platform</h3>
+    <p>
+      {{#if requestSso}}Single Sign-On for {{spName}}{{else}}Sign in with your organizational account{{/if}}
+    </p>
+    <form method="POST" action="/auth/login" class="loginForm">
+      <input type="text" id="username" class="username" name="username" placeholder="Username"/>
+      <input type="password" class="password" name="password" placeholder="Password"/>
+      <br/>
+      <input type="hidden" name="requestSSO" value="{{requestSso}}"/>
+      <input type="hidden" name="sp" value="{{issuer}}"/>
+      <input type="hidden" name="id" value="{{id}}"/>
+      <input type="hidden" name="destination" value="{{destination}}"/>
+      <input type="hidden" name="acsUrl" value="{{acsUrl}}"/>
+      <input type="hidden" name="RelayState" value="{{relayState}}"/>
+      <input type="submit" class="loginBtn" value="Log In"/>
+    </form>
+    <p>
+      Sign-in to AT&T MAC Platform requires device registration.  <a href="#">Click here</a> for more information
+    </p>
+    <script>
+      document.onreadystatechange = function () {
+        if (document.readyState == "interactive") {
+          document.getElementById('username').focus();
         }
-      </script>
+      }
+    </script>
+  </section>
+</main>
