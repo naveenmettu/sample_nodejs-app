@@ -11,7 +11,9 @@ const idpRouter = require('./idp')
 router.use('/auth', authRouter);
 router.use('/idp', idpRouter);
 
-router.get('/', passport.authenticate('ldap', { failureRedirect: '/auth/login' }), (req, res, next) => {
+router.get('/', (req, res, next) => {
+    passport.authenticate('ldap', { failureRedirect: '/auth/login' })(req, res, next)
+  }, (req, res, next) => {
   res.render('home', { username: req.user.id });
 });
 
