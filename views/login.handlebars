@@ -1,10 +1,10 @@
 <main>
-  <section class="backgroundImage"></section>
-  <aside>
+  <aside class="backgroundImage"></aside>
+  <section>
     <div class="formLogo"></div>
     <h3 class="logoText">MAC Platform</h3>
     <p>
-      {{#if requestSso}}Single Sign-On for {{spName}}{{else}}Sign in with your organiztional account{{/if}}
+      {{#if requestSso}}Single Sign-On for {{spName}}{{else}}Sign in with your organizational account{{/if}}
     </p>
     <form method="POST" action="/auth/login" class="loginForm">
       <input type="text" id="username" class="username" name="username" placeholder="Username"/>
@@ -28,5 +28,5 @@
         }
       }
     </script>
-  </aside>
+  </section>
 </main>

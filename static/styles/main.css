@@ -6,11 +6,12 @@ h3 {
 	font-weight: 500;
 	line-height: 15.4px;
   display: inline;
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   position: absolute;
   top: 90px;
 }
+
 p {
 	font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
 	font-size: 14px;
@@ -20,9 +21,11 @@ p {
 	font-weight: 100;
 	line-height: 20px;
 }
+
 body {
-  margin: 0px;
+  margin: 0;
 }
+
 main {
   color: white;
   display: flex;
@@ -30,13 +33,14 @@ main {
   height: 100vh;
   overflow: hidden;
 }
-section {
+
+aside {
    width: 75%;
 }
 
-aside {
+section {
   background-color: black;
-  padding: 50px 0px 0px 50px;
+  padding: 50px 0 0 50px;
 }
 .backgroundImage {
   background-image: url("/../images/att_globe_rgb_grd_pos.png");
@@ -60,7 +64,7 @@ aside {
 
 .username, .password {
   display: block;
-  margin: 20px 0px;
+  margin: 20px 0;
   padding: 20px;
   width: 360px;
   border-radius: 8px;
