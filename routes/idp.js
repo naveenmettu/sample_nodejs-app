@@ -61,7 +61,7 @@ const idp = new IdentityProvider({
  *
  */
 function signIn(req, res, next) {
-  return idp.parseSignInRequest(req, function(err, authenticationOptions) {
+  return idp.parseSignInRequest(req, (err, authenticationOptions) => {
     if (err) {
       return res.render('error', {
         message: `Unable to parse sign-in request or validation failed: ${err.message}`
