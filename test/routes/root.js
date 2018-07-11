@@ -10,12 +10,12 @@ describe('Test routes', () => {
   let server
   let ldapStub
   let ldapSearch
+  let passportStub
   before(() => {
     server = require('../../bin/www').server
 
     ldapStub = sinon.stub(ldap, 'createClient')
     ldapStub.callsFake((params) => {
-      console.log('here')
       return {
         bind: function(dn, password, callback) {
           callback(null)
@@ -28,14 +28,32 @@ describe('Test routes', () => {
       }
     })
 
+    const passportAuthenticate = passport.authenticate
+    passportStub = sinon.stub(passport, 'authenticate')
+    passportStub.data = {
+      isAuthenticated: false
+    }
+    passportStub.callsFake((strategy, options) => {
+      return (req, res, next) => {
+        if (passportStub.data.isAuthenticated) {
+          req.user = { id: 'foobar' }
+          next()
+        } else {
+          passportAuthenticate.call(passport, strategy, options)(req, res, next)
+        }
+      }
+    })
   })
   after(() => {
+    passportStub.reset()
+    ldapStub.reset()
     server.close()
   })
 
   /*------------------------ LDAP ------------------------*/
 
   it('should redirect on / when unauthenticated', done => {
+    passportStub.data.isAuthenticated = false
     request(server)
       .get('/')
       .expect(302)
@@ -66,13 +84,7 @@ describe('Test routes', () => {
   })
 
   it('should respond with username when authenticated', done => {
-    const stub = sinon.stub(passport, 'authenticate')
-    stub.callsFake((strategy, options) => {
-      return (req, res, next) => {
-        req.user = { id: 'foobar' }
-        next()
-      }
-    })
+    passportStub.data.isAuthenticated = true
     request(server)
       .get('/')
       .expect(200, done)
