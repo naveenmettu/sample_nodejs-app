@@ -15,7 +15,6 @@ describe('Test routes', () => {
 
     ldapStub = sinon.stub(ldap, 'createClient')
     ldapStub.callsFake((params) => {
-      console.log('here')
       return {
         bind: function(dn, password, callback) {
           callback(null)
