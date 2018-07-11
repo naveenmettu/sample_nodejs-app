@@ -33,6 +33,8 @@ describe('Test routes', () => {
     server.close()
   })
 
+  /*------------------------ LDAP ------------------------*/
+
   it('should redirect on / when unauthenticated', done => {
     request(server)
       .get('/')
@@ -76,6 +78,8 @@ describe('Test routes', () => {
       .expect(200, done)
   })
 
+  /*------------------------ SAML ------------------------*/
+
   it('should process a SAML request', done => {
     // SAML request:
     // <?xml version="1.0"?><samlp:AuthnRequest xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" ID="_afba590baaf5b8e33472" Version="2.0" IssueInstant="2018-07-10T19:09:15.544Z" ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" AssertionConsumerServiceURL="http://localhost:1337/login/callback" Destination="http://localhost:8080/idp/sso"><saml:Issuer xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">https://sample-sp/sp</saml:Issuer><samlp:NameIDPolicy xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" Format="urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress" AllowCreate="true"/><samlp:RequestedAuthnContext xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" Comparison="exact"><saml:AuthnContextClassRef xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</saml:AuthnContextClassRef></samlp:RequestedAuthnContext></samlp:AuthnRequest>
@@ -85,5 +89,26 @@ describe('Test routes', () => {
       .get('/idp/sso')
       .send(samlRequest)
       .expect(200, done)
+  })
+
+  it('should send a SAML response', done => {
+    setTimeout(() => {
+      ldapSearch.emit('searchEntry', {
+        raw: {
+          dn: 'foobar',
+          userPrincipalName: 'Foo Bar'
+        }
+      })
+      ldapSearch.emit('end')
+    }, 10)
+    request(server)
+      .post('/auth/login')
+      .send('username=foobar&password=mypassword&requestSSO=true&sp=https%3A%2F%2Fsample-sp%2Fsp&id=_afba590baaf5b8e33472&destination=http%3A%2F%2Flocalhost%3A8080%2Fidp%2Fsso&acsUrl=http%3A%2F%2Flocalhost%3A1337%2Flogin%2Fcallback&relayState=')
+      .expect(302)
+      .expect('Location', '/idp/sso?sp=https%3A%2F%2Fsample-sp%2Fsp&id=_afba590baaf5b8e33472&destination=http%3A%2F%2Flocalhost%3A8080%2Fidp%2Fsso&acsUrl=http%3A%2F%2Flocalhost%3A1337%2Flogin%2Fcallback&relayState=undefined')
+      .end((err, res) => {
+        assert(!err)
+        done()
+      })
   })
 })
