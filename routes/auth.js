@@ -13,13 +13,15 @@ function renderLogin(req, res) {
 }
 
 function login(req, res) {
-  if ((req.query || {}).requestSSO === 'true' || (req.body || {}).requestSSO === 'true') {
-    const sp = (req.query || {}).sp || (req.body || {}).sp
-    const relayState = (req.query || {}).relayState || (req.body || {}).RelayState
-    const id = (req.query || {}).id || (req.body || {}).id
-    const destination = (req.query || {}).destination || (req.body || {}).destination
-    const acsUrl = (req.query || {}).acsUrl || (req.body || {}).acsUrl
-    res.redirect(
+  const query = req.query || {}
+  const body = req.body || {}
+  if (query.requestSSO === 'true' || body.requestSSO === 'true') {
+    const sp = query.sp || body.sp
+    const relayState = query.relayState || body.RelayState
+    const id = query.id || body.id
+    const destination = query.destination || body.destination
+    const acsUrl = query.acsUrl || body.acsUrl
+    return res.redirect(
       `/idp/sso?sp=${encodeURIComponent(sp)}&id=${encodeURIComponent(
         id
       )}&destination=${encodeURIComponent(destination)}&acsUrl=${encodeURIComponent(
@@ -27,6 +29,7 @@ function login(req, res) {
       )}&relayState=${encodeURIComponent(relayState)}`
     )
   }
+
   res.redirect('/')
 }
 
