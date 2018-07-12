@@ -4,10 +4,11 @@
   "description": "Identity Provider for ATT Data Products",
   "private": true,
   "scripts": {
-    "start": "node -r dotenv/config ./bin/www",
-    "prettier":
-      "./node_modules/.bin/prettier --config ./package.json --write \"{bin,lib,middleware,models,routes,utils}/**/*.{js,jsx,json,css}\"",
-    "eslint": "./node_modules/.bin/eslint \"{bin,lib,middleware,models,routes,utils}/**/*.js\"",
+    "start": "node ./bin/www",
+    "prettier": "./node_modules/.bin/prettier --config ./package.json --write \"{bin,lib,middleware,models,routes,utils}/**/*.{js,jsx,json,css}\"",
+    "eslint": "./node_modules/.bin/eslint \"{bin,lib,middleware,models,routes,test}/**/*.js\"",
+    "test": "mocha test/**/*.js",
+    "coverage": "nyc --reporter=html --reporter=text mocha test/**/*.js",
     "precommit": "lint-staged"
   },
   "dependencies": {
@@ -25,12 +26,17 @@
     "winston": "^3.0.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "eslint": "^5.0.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.1",
     "husky": "^0.14.3",
     "lint-staged": "^7.2.0",
-    "prettier": "^1.13.7"
+    "mocha": "^5.2.0",
+    "nyc": "^12.0.2",
+    "prettier": "^1.13.7",
+    "sinon": "^6.1.2",
+    "supertest": "^3.1.0"
   },
   "nodemonConfig": {
     "ignore": ["*.spec.js", "test/*", "docs/*"]

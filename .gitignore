@@ -16,3 +16,7 @@ service-provider-config*
 # System Files
 .DS_Store
 Thumbs.db
+
+# Coverage
+.nyc_output
+coverage
