@@ -29,11 +29,11 @@
  *   return router;
  * }
  */
-const passport = require('passport');
-const LdapStrategy = require('../lib/LdapStrategy');
-const logger = require('../lib/logger');
+const passport = require('passport')
+const LdapStrategy = require('../lib/LdapStrategy')
+const logger = require('../lib/logger')
 
-const auth = {};
+const auth = {}
 
 /**
  * verifyUser
@@ -47,27 +47,38 @@ function verifyLdapProfile(user, done) {
   const profile = {
     provider: 'ldap',
     id: (user.userPrincipalName || user.sAMAccountName).toString().toLowerCase(),
-    displayName: (user.displayName || user.cn) ? (user.displayName || user.cn).toString() : undefined,
+    displayName: user.displayName || user.cn ? (user.displayName || user.cn).toString() : undefined,
     name: {
-      familyName: (user.sn ? user.sn.toString() : undefined),
-      givenName: (user.givenName ? user.givenName.toString() : undefined)
+      familyName: user.sn ? user.sn.toString() : undefined,
+      givenName: user.givenName ? user.givenName.toString() : undefined
     },
-    emails: (user.mail ? [{
-      value: user.mail.toString().toLowerCase(),
-      type: 'work'
-    }] : []),
+    emails: user.mail
+      ? [
+          {
+            value: user.mail.toString().toLowerCase(),
+            type: 'work'
+          }
+        ]
+      : [],
     photos: [],
     dn: user.dn.toString(),
-    groups: (user.memberOf ? (process.env.LDAP_AD_MEMBER_OF_FILTER ? (Array.isArray(user.memberOf) ? user.memberOf : [user.memberOf]).filter((dn) => {
-        return dn.toString().indexOf(process.env.LDAP_AD_MEMBER_OF_FILTER) !== -1;
-      }) : (Array.isArray(user.memberOf) ? user.memberOf : [user.memberOf])).map((dn) => {
-        return dn.toString().substring(3, dn.toString().indexOf(',')); 
-      }) : undefined)
-  };
+    groups: user.memberOf
+      ? (process.env.LDAP_AD_MEMBER_OF_FILTER
+          ? (Array.isArray(user.memberOf) ? user.memberOf : [user.memberOf]).filter(dn => {
+              return dn.toString().indexOf(process.env.LDAP_AD_MEMBER_OF_FILTER) !== -1
+            })
+          : Array.isArray(user.memberOf)
+            ? user.memberOf
+            : [user.memberOf]
+        ).map(dn => {
+          return dn.toString().substring(3, dn.toString().indexOf(','))
+        })
+      : undefined
+  }
 
-  logger.debug('Mapped user into profile', { profile });
+  logger.debug('Mapped user into profile', { profile })
 
-  done(null, profile);
+  done(null, profile)
 }
 
 auth.strategies = {}
@@ -79,20 +90,26 @@ auth.init = function init(app) {
 
   passport.serializeUser(function(user, done) {
     // Write the entire user record as-is
-    done(null, user);
+    done(null, user)
   })
 
   passport.deserializeUser(function(user, done) {
     // Deserialized user is the entire user object; everything is stored in session, nothing to look up
-    done(null, user);
+    done(null, user)
   })
 
-  const ldapStrategy = new LdapStrategy({
-    url: process.env.LDAP_URL,
-    serviceAccountDn: process.env.LDAP_SERVICE_ACCOUNT_DN,
-    serviceAccountPassword: (new Buffer(process.env.LDAP_SERVICE_ACCOUNT_PASSWORD, 'base64')).toString(),
-    searchBase: process.env.LDAP_SEARCH_BASE
-  }, verifyLdapProfile);
+  const ldapStrategy = new LdapStrategy(
+    {
+      url: process.env.LDAP_URL,
+      serviceAccountDn: process.env.LDAP_SERVICE_ACCOUNT_DN,
+      serviceAccountPassword: new Buffer(
+        process.env.LDAP_SERVICE_ACCOUNT_PASSWORD,
+        'base64'
+      ).toString(),
+      searchBase: process.env.LDAP_SEARCH_BASE
+    },
+    verifyLdapProfile
+  )
 
   // Set up the LDAP auth strategy
   passport.use('ldap', ldapStrategy)
@@ -182,4 +199,4 @@ console.log('Req ended middle')
   }
 }*/
 
-module.exports = auth;
+module.exports = auth
